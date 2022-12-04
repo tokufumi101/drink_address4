@@ -1,0 +1,118 @@
+11/16 
+デプロイ成功
+やったこと
+①ec2にapacheをインストール＋起動
+https://zenn.dev/sway/articles/aws_publish_apache
+②ec2にtomcatをインストール＋起動
+https://confrage.jp/aws-ec2%E3%81%ABtomcat%
+E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88
+%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95/
+③ec2に上げたjarファイルを、homeディレクトリから/usr/share/tomcatに移動
+https://atmarkit.itmedia.co.jp/ait/articles/1606/13/news024.html
+④java -jar
+⑤接続する
+
+10/13
+原状復帰。
+次回：postgresqlにデータを保存する
+→仕事のパソコンを見ながらpostgresqlのproperties設定
+
+10/4
+jarファイルを作成、herokuにdeploy 失敗するところまで
+次回：herokuからアプリ画面に接続する（まずはデプロイに成功する）
+
+10/2
+今日：現在地を取得、真ん中表示できた
+次回：DBをmySQLにする→環境構築からスタート（嫌すぎる）
+デプロイ＆スマホから起動させてみる→安価なサーバーを検索
+学んだこと：map.panToで地図の中心を滑らかに移動できる
+form内に複数ボタンを置きたい場合→片方をtype=buttonにすればsubmitされない
+
+9/29
+今日：ドリンクに応じたマップを表示できた
+次回：現在地を取得、真ん中にする/見た目をかっこよくする
+
+9/19
+次回：ドリンクの種類を選択した際に、それに応じたマップが表示されるようにする
+初手：マップをhttp://localhost:8080/selectに埋め込む。
+
+9/11
+次回：複数ピンをさす。（現時点でDBにある全データの経度をjsに出力完了）
+次回使えそうなurl : https://www.tam-tam.co.jp/tipsnote/javascript/post7755.html
+9/7
+{
+ "geometry":
+  {"coordinates":[
+  141.349243,
+  43.068455
+  ],
+   "type":"Point"
+   },
+   
+  "type":"Feature",
+  
+  "properties":
+  {"addressCode":"",
+   "title":"北海道札幌市北区北六条西四丁目"
+   }
+ }
+
+9/3
+次回：登録してある住所を緯度経度変換、ジオなんたらでできそう？
+学んだこと：リダイレクトした上でパラメータを引き継ぐ時は、redirectAttributes.addAttributeを用いる。リダイレクトは再読み込み。
+
+8/28
+次回：①削除、②編集、できれば見た目も
+学んだこと：one to many 主キーに自動的に紐づけられること。
+複数情報を飛ばす際にvalueに複数書いて、コントローラーでsplitで分ける。（推奨できるかは不明）
+valueが中身、nameが箱。
+jsonのレスポンスが配列で帰ってきた場合、JSONObject[0]で一つ目を抽出できる
+
+8/20
+・デフォルトでは(schema.sql,data.sql)->hibernate(@Entity)の順で読み込まれるので、順序を変えたいならspring.jpa.defer-datasource-initialization=trueをapplication.propertiesに追記
+・@NoArgsConstructor,@AllArgsConstructorでコンストラクタを自動で作ることができる
+
+8/22
+学んだこと：one to many でentityを紐づけた場合、主キーで紐づけられる。
+焼きそば
+
+これはコンフリクトです。ですです
+
+
+8/21
+次回：特定のドリンク住所のみを抽出する,gitの使い方を練習する。(川崎)前川にone to manyでなぜ紐づくか聞く。
+学んだこと：連携したエンティティの要素をHTMLに表示する場合、{(エンティティ名.フィールド変数名)}の形で表示可能。
+
+
+8/20
+・デフォルトでは(schema.sql,data.sql)->hibernate(@Entity)の順で読み込まれるので、順序を変えたいならspring.jpa.defer-datasource-initialization=trueをapplication.propertiesに追記
+・@NoArgsConstructor,@AllArgsConstructorでコンストラクタを自動で作ることができる
+
+8/18
+次回Todo：data,schemaに初期値を入力。addressテーブルの全カラムにデータを追加する。
+
+
+8/15 DrinkEnt型→long型にキャストできない
+→初めからDrinkEnt型以外の型としてControllerに送ってみてはどうか
+→ここでDto（アプリ内の変数受け渡し専用クラス）を作ってみてはどうか
+
+8/14 githubにpushしようとするとerror403(アクセス権限のエラーが出る)
+ー＞github上でアクセス権限の追加で解決。
+https://scalapedia.com/articles/148/GitHub%E3%81%AE%E3%83%97%E3%83%A9%E3%82%A4%E3%83%99%E3%83%BC%E3%83%88%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%81%AB%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%82%92%E6%8B%9B%E5%BE%85%E3%81%99%E3%82%8B#:~:text=%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%81%AE%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E6%A8%A9%E8%A8%AD%E5%AE%9A,%E8%A8%AD%E5%AE%9A%E7%94%BB%E9%9D%A2%E3%82%92%E9%96%8B%E3%81%8D%E3%81%BE%E3%81%99%E3%80%82
+
+
+private DrinkEnt drinkId;　テーブルを結合する際、ManyToOne側のフィールド変数の型は、OneToMany側のEntityのクラス名にする（8/11）
+
+create table drink_list(
+ id int not null auto_increment,
+ name varchar(255) not null,
+ primary key(id)
+ );
+ 
+ create table adress_list(
+ id int not null auto_increment,
+ encount_date timestamp not null,
+ drink_id varchar(255) not null ,
+ address varchar(255) not null,
+ primary key(id)
+ );
