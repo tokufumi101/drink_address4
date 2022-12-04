@@ -27,26 +27,32 @@ public class DrinkController {
 	AddressDao addressRepository;
 	@Autowired
 	DrinkService drinkService;
-
+	
+	/*
+	 * トップ画面の描写
+	 * @param model:画面にdrinkaddressテーブルのデータを描画するため
+	 * @return トップ画面
+	 */
 	@GetMapping("/top")
-	public String top(Model model, AddressEnt addressEnt) throws Exception {
-		List list = drinkRepository.findAll();
-		model.addAttribute("data", list);
-		List addressList = addressRepository.findAll();
-		model.addAttribute("tableData", addressList);
+	public String top(Model model) throws Exception {
+		drinkService.top(model);
 		return "top";
 	}
-
+	
+	/*
+	 * 登録処理
+	 * @param name:ドリンク名
+	 * @param drinkEnt:すでに登録のあるドリンク名かどうかチェックするため
+	 * @param addressEnt:住所登録のため
+	 * @param drinkDto:入力された住所を受け取るため
+	 * @param redirectAttributes:フラッシュメッセージ出力のため
+	 * @return トップ画面
+	 */	
 	@PostMapping("/top")
 	public String add(@RequestParam("name") String name, DrinkEnt drinkEnt, AddressEnt addressEnt,
 			@ModelAttribute DrinkDto drinkDto, RedirectAttributes redirectAttributes) {
-
-		String message=(!drinkService.register(name, drinkEnt, addressEnt, drinkDto))
-				? "入力値が無効です":"登録完了しました";
-		
-		redirectAttributes.addFlashAttribute("flashmsg", message);
-		
-		return "redirect:/top";
+			drinkService.register(name, drinkEnt, addressEnt, drinkDto,redirectAttributes);
+			return "redirect:/top";
 	}
 
 //	@PostMapping(value="/top",params="select")
@@ -68,23 +74,21 @@ public class DrinkController {
 //		model.addAttribute("data", list);
 //		return "list";
 //	}
+	
+	/*
+	 * 検索処理
+	 * @return 検索結果画面
+	 */	
 	@PostMapping("/select")
 	public String select(Model model, @RequestParam("id,name") String idName) {
-		
-		String[] splitedIdName = idName.split(",");
-		
-		DrinkEnt drinkEnt = new DrinkEnt();
-		long splitedId = Long.parseLong(splitedIdName[0]);
-		drinkEnt.setId(splitedId);
-		drinkEnt.setName(splitedIdName[1]);
-		List selectedList = addressRepository.findByDrinkEnt(drinkEnt);
-		model.addAttribute("selectedList", selectedList);
-		List list = drinkRepository.findAll();
-		model.addAttribute("data", list);
-		
+		drinkService.select(model,idName);
 		return "list";
 	}
-
+	
+	/*
+	 * 検索処理（GETで再読み込みされた際の処理。POSTと変わらない。）
+	 * @return 検索結果画面
+	 */	
 	@GetMapping("/select")
 	public String select2(Model model,
 			@RequestParam(name = "id,name", value = "id,name", required = false) String idName) {

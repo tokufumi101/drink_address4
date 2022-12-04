@@ -7,9 +7,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dao.AddressDao;
 import com.example.demo.dao.DrinkDao;
@@ -24,9 +28,15 @@ public class DrinkService {
 	@Autowired DrinkDao drinkRepository;
 	@Autowired AddressDao addressRepository;
 	
+	public void top(Model model) throws Exception {
+		List list = drinkRepository.findAll();
+		model.addAttribute("data", list);
+		List addressList = addressRepository.findAll();
+		model.addAttribute("tableData", addressList);
+	}
 	
-	public boolean register(String name, DrinkEnt drinkEnt, AddressEnt addressEnt,
-			DrinkDto drinkDto) {
+	public void register(String name, DrinkEnt drinkEnt, AddressEnt addressEnt,
+			DrinkDto drinkDto,RedirectAttributes redirectAttributes) {
 		if (!drinkRepository.existsByName(name)) {
 			DrinkEnt drinkPlus = new DrinkEnt(name);
 			drinkPlus.setId(drinkRepository.findAll().size() + 1);
@@ -77,10 +87,25 @@ public class DrinkService {
 		addressEnt.setLatitude(lat);
 		addressEnt.setLongitude(lon);
 		addressRepository.saveAndFlush(addressEnt);
+		redirectAttributes.addFlashAttribute("flashmsg", "登録完了しました");
 		}catch(NullPointerException e) {
 			e.printStackTrace();
-			return false;
+			redirectAttributes.addFlashAttribute("flashmsg", "入力値が無効です");
 		}
-		return true;
 	}
+	
+	public void select(Model model, @RequestParam("id,name") String idName) {
+		String[] splitedIdName = idName.split(",");
+		
+		DrinkEnt drinkEnt = new DrinkEnt();
+		long splitedId = Long.parseLong(splitedIdName[0]);
+		drinkEnt.setId(splitedId);
+		drinkEnt.setName(splitedIdName[1]);
+		List selectedList = addressRepository.findByDrinkEnt(drinkEnt);
+		model.addAttribute("selectedList", selectedList);
+		List list = drinkRepository.findAll();
+		model.addAttribute("data", list);
+	}
+	
+	
 }
