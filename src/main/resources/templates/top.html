@@ -25,16 +25,12 @@
 				<a th:href="@{/top}">飲み物住所</a>
 			</div>
 			<div class="header-list">
-				<form id="submit_form" th:action="@{/select}" method="post">
-					飲み物一覧
-					<div class="center">
-						<select id="submit_select" class="custom-pull" name="id,name"
-							size="1">
+				<form id="submit_form" th:action="@{'/select/'}" method="post">
+						飲み物一覧<select id="submit_select" name="id">
 							<option value="#">下から選択</option>
 							<option th:each="item : ${data}"
-								th:value="${item.id}+','+ ${item.name}">[[${item.name}]]</option>
+								th:value="${item.id}">[[${item.name}]]</option>
 						</select>
-					</div>
 				</form>
 			</div>
 		</div>

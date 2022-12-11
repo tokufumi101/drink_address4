@@ -12,7 +12,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dao.AddressDao;
@@ -94,18 +93,12 @@ public class DrinkService {
 		}
 	}
 	
-	public void select(Model model, @RequestParam("id,name") String idName) {
-		String[] splitedIdName = idName.split(",");
-		
-		DrinkEnt drinkEnt = new DrinkEnt();
-		long splitedId = Long.parseLong(splitedIdName[0]);
-		drinkEnt.setId(splitedId);
-		drinkEnt.setName(splitedIdName[1]);
-		List selectedList = addressRepository.findByDrinkEnt(drinkEnt);
+//検索処理
+	public void select(Model model, String id) {
+		List selectedList = addressRepository.findByDrinkEnt(id);
 		model.addAttribute("selectedList", selectedList);
 		List list = drinkRepository.findAll();
 		model.addAttribute("data", list);
-	}
-	
+	}	
 	
 }
