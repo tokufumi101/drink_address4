@@ -36,15 +36,18 @@
 		</div>
 	</header>
 	<main>
-		<p class="flashmsg" th:text="${flashmsg}"></p>
 		<div class="container">
-			<h1>ようこそ</h1>
 			<form method="post" th:action="@{/top}" th:object="${drinkDto}">
-
-				<input list="DrinkList" autocomplete="off" name="name">
-				<datalist id="DrinkList">
-					<option th:each="item : ${data}">[[${item.name}]]</option>
-				</datalist>
+				<div th:if="${flashmsg!=null}" class="color-box">
+					<p class="flashmsg" th:text="${flashmsg}"></p>
+				</div>
+				<h1>ようこそ</h1>
+				<p>
+					ドリンク： <input list="DrinkList" autocomplete="off" name="name">
+					<datalist id="DrinkList">
+						<option th:each="item : ${data}">[[${item.name}]]</option>
+					</datalist>
+				</p>
 				<p>
 					住所：<input id="addressOutput" type="text" name="address">
 				</p>
@@ -58,43 +61,46 @@
 
 			</form>
 		</div>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>住所</th>
-					<th>ドリンク名</th>
-					<th>登録日時</th>
+		<div class="container">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>住所</th>
+						<th>ドリンク名</th>
+						<th>登録日時</th>
 
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="tableData" th:each="item:${tableData}">
-					<th th:text="*{item.Id}"></th>
-					<td id="address" th:text="*{item.address}"></td>
-					<td id="drinkName" th:text="${item.drinkEnt.name}"></td>
-					<td th:text="*{item.registerDate}"></td>
-					<td style="display: none;" class="latitude"
-						th:text="*{item.latitude}"></td>
-					<td style="display: none;" class="longitude"
-						th:text="*{item.longitude}"></td>
-					<td>
-						<form th:action="@{/delete}" method="post">
-							<input type="hidden" name="Id" th:value="${item.Id}" /> <input
-								type="hidden" name="id,name"
-								th:value="${item.drinkEnt.id}+','+ ${item.drinkEnt.name}" /> <input
-								type="submit" class="btn btn-danger" value="削除" />
-						</form>
-					</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="tableData" th:each="item:${tableData}">
+						<th th:text="*{item.Id}"></th>
+						<td id="address" th:text="*{item.address}"></td>
+						<td id="drinkName" th:text="${item.drinkEnt.name}"></td>
+						<td th:text="*{item.registerDate}"></td>
+						<td style="display: none;" class="latitude"
+							th:text="*{item.latitude}"></td>
+						<td style="display: none;" class="longitude"
+							th:text="*{item.longitude}"></td>
+						<td>
+							<form th:action="@{/delete}" method="post">
+								<input type="hidden" name="Id" th:value="${item.Id}" /> <input
+									type="hidden" name="id,name"
+									th:value="${item.drinkEnt.id}+','+ ${item.drinkEnt.name}" /> <input
+									type="submit" class="btn btn-danger" value="削除" />
+							</form>
+						</td>
 
-				</tr>
-			</tbody>
-		</table>
-
-
-		<div class="map-wrap">
-			<div style="width: 640px; height: 320px;" id="map"></div>
+					</tr>
+				</tbody>
+			</table>
 		</div>
+		<div class="container">
+			<div class="map-wrap">
+				<div style="width: 640px; height: 320px;" id="map"></div>
+			</div>
+		</div>
+
 	</main>
 	<!-- "YOUR_API_KEY" の部分に、作成したAPIキーを貼り付ける -->
 	<script type="text/javascript"
@@ -105,6 +111,5 @@
 
 	<!-- 👇このjsファイル内にAPIを使用した記述を書く（後述） -->
 	<script src="map.js"></script>
-
 </body>
 </html>
