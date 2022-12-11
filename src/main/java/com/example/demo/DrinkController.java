@@ -1,12 +1,11 @@
 package com.example.demo;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -79,29 +78,19 @@ public class DrinkController {
 	 * 検索処理
 	 * @return 検索結果画面
 	 */	
-	@PostMapping("/select")
-	public String select(Model model, @RequestParam("id,name") String idName) {
-		drinkService.select(model,idName);
-		return "list";
+	@PostMapping("/select/")
+	public String select(Model model, @RequestParam("id") String id) {
+		System.out.println(id);
+		return "redirect:/select/"+id;
 	}
 	
 	/*
 	 * 検索処理（GETで再読み込みされた際の処理。POSTと変わらない。）
 	 * @return 検索結果画面
 	 */	
-	@GetMapping("/select")
-	public String select2(Model model,
-			@RequestParam(name = "id,name", value = "id,name", required = false) String idName) {
-
-		String[] splitedIdName = idName.split(",");
-
-		DrinkEnt drinkEnt = new DrinkEnt();
-		long splitedId = Long.parseLong(splitedIdName[0]);
-		drinkEnt.setId(splitedId);
-		drinkEnt.setName(splitedIdName[1]);
-		List selectedList = addressRepository.findByDrinkEnt(drinkEnt);
-		model.addAttribute("selectedList", selectedList);
-
+	@GetMapping("/select/{id}")
+	public String search(Model model,@PathVariable("id") String id) {
+		drinkService.select(model,id);
 		return "list";
 	}
 
