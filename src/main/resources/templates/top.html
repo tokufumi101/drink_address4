@@ -26,22 +26,20 @@
 			</div>
 			<div class="header-list">
 				<form id="submit_form" th:action="@{'/select/'}" method="post">
-						飲み物一覧<select id="submit_select" name="id">
-							<option value="#">下から選択</option>
-							<option th:each="item : ${data}"
-								th:value="${item.id}">[[${item.name}]]</option>
-						</select>
+					飲み物一覧<select id="submit_select" name="id">
+						<option value="#">下から選択</option>
+						<option th:each="item : ${data}" th:value="${item.id}">[[${item.name}]]</option>
+					</select>
 				</form>
 			</div>
 		</div>
 	</header>
 	<main>
-		<div class="container">
+		<div class="box">
 			<form method="post" th:action="@{/top}" th:object="${drinkDto}">
 				<div th:if="${flashmsg!=null}" class="color-box">
 					<p class="flashmsg" th:text="${flashmsg}"></p>
 				</div>
-				<h1>ようこそ</h1>
 				<p>
 					ドリンク： <input list="DrinkList" autocomplete="off" name="name">
 					<datalist id="DrinkList">
@@ -58,10 +56,15 @@
 					</div>
 				</div>
 				<input type="submit" value="送信">
-
 			</form>
+			<div class="box">
+				<div class="map-wrap">
+					<div style="width: 640px; height: 320px;" id="map"></div>
+				</div>
+			</div>
 		</div>
-		<div class="container">
+
+		<div class="box">
 			<table class="table">
 				<thead>
 					<tr>
@@ -90,15 +93,9 @@
 									type="submit" class="btn btn-danger" value="削除" />
 							</form>
 						</td>
-
 					</tr>
 				</tbody>
 			</table>
-		</div>
-		<div class="container">
-			<div class="map-wrap">
-				<div style="width: 640px; height: 320px;" id="map"></div>
-			</div>
 		</div>
 
 	</main>
